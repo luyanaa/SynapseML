@@ -24,7 +24,7 @@ abstract class LightGBMRankerTestData extends Benchmarks with EstimatorFuzzing[L
       .load(DatasetUtils.rankingTrainFile("rank.train").toString)
       .withColumn("iid", monotonically_increasing_id())
 
-    def createRows = udf((colValue: Int, index: Int) => List.fill(colValue)(index).toArray)
+    def createRows = udf((colValue: Int, index: Long) => List.fill(colValue)(index).toArray)
 
     val df2 = spark.read.format("csv")
       .option("inferSchema", value = true)

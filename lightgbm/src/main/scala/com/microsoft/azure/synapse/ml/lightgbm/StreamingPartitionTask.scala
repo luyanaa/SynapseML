@@ -301,9 +301,9 @@ class StreamingPartitionTask extends BasePartitionTask {
   @tailrec
   private def loadOneSparseMicroBatchBuffer(state: StreamingState,
                                             inputRows: Iterator[Row],
-                                            batchRowCount: Int,
+                                            batchRowCount: Long,
                                             elementCount: Int,
-                                            maxBatchCount: Int): (Int, Int) = {
+                                            maxBatchCount: Int): (Long, Int) = {
     if (inputRows.hasNext && batchRowCount < maxBatchCount) {
       val row = inputRows.next()
       // Each row might be either sparse or dense, so convert to overall sparse format
@@ -328,7 +328,7 @@ class StreamingPartitionTask extends BasePartitionTask {
     } else (batchRowCount, elementCount)
   }
 
-  private def loadOneMetadataRow(state: StreamingState, row: Row, index: Int): Unit = {
+  private def loadOneMetadataRow(state: StreamingState, row: Row, index: Long): Unit = {
     state.labelBuffer.setItem(index, row.getDouble(state.labelIndex).toFloat)
     if (state.hasWeights) state.weightBuffer.setItem(index, row.getDouble(state.weightIndex).toFloat)
     if (state.hasGroups) {
@@ -346,7 +346,7 @@ class StreamingPartitionTask extends BasePartitionTask {
     }
   }
 
-  private def createSharedValidationDataset(ctx: PartitionTaskContext, rowCount: Int): LightGBMDataset = {
+  private def createSharedValidationDataset(ctx: PartitionTaskContext, rowCount: Long): LightGBMDataset = {
     val pointer = lightgbmlib.voidpp_handle()
     val reference = ctx.sharedState.datasetState.streamingDataset.get.datasetPtr
     LightGBMUtils.validate(

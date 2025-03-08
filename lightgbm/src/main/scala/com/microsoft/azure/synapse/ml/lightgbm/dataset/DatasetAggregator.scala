@@ -132,7 +132,7 @@ private[lightgbm] abstract class BaseChunkedColumns(rowsIter: PeekingIterator[Ro
     case sparse: SparseVector => sparse.size
   }
 
-  lazy val rowCount: Int = rowsIter.map { row =>
+  lazy val rowCount: Long = rowsIter.map { row =>
     addFeatures(row)
     labels.add(row.getDouble(schema.fieldIndex(columnParams.labelColumn)).toFloat)
     columnParams.weightColumn.foreach { col =>
@@ -245,7 +245,7 @@ private[lightgbm] abstract class BaseAggregatedColumns(val chunkSize: Int) exten
 
   protected var numCols = 0
 
-  def getRowCount: Int = rowCount.get().toInt
+  def getRowCount: Long = rowCount.get().toLong
 
   def getInitScoreCount: Int = initScoreCount.get().toInt
 
@@ -294,7 +294,7 @@ private[lightgbm] abstract class BaseAggregatedColumns(val chunkSize: Int) exten
     else {
       ChunkedArrayUtils.insertTransposedChunkedArray(
         chunkedArray,
-        getInitScoreCount/getRowCount,
+        (getInitScoreCount.toLong/getRowCount).toInt,
         initScores.get,
         getRowCount,
         startIndex)

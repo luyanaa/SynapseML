@@ -23,7 +23,7 @@ import com.microsoft.ml.lightgbm._
   * .
   * Note: sample data row count is not expected to exceed max(Int), so we index with Ints.
   */
-case class SampledData(numRows: Int, numCols: Int) {
+case class SampledData(numRows: Long, numCols: Int) {
 
   // Allocate full arrays for each feature column, but we will push only non-zero values and
   // keep track of actual counts in rowCounts array

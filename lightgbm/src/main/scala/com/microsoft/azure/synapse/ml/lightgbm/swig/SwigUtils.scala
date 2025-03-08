@@ -221,7 +221,7 @@ class DoublePointerSwigArray(val array: SWIGTYPE_p_p_double, val size: Int) exte
     lightgbmlib.doublePtrArray_setitem(array, index, item.array) // set native pointer value
   }
 
-  def pushElement(col: Int, row: Int, value: Double): Unit = {
+  def pushElement(col: Int, row: Long, value: Double): Unit = {
     columnVectors(col).foreach(v => v.setItem(row, value))
   }
 
@@ -246,7 +246,7 @@ class IntPointerSwigArray(val array: SWIGTYPE_p_p_int, val size: Int) extends Ba
     lightgbmlib.intPtrArray_setitem(array, index, item.array) // set native pointer value
   }
 
-  def pushElement(col: Int, row: Int, value: Int): Unit = {
+  def pushElement(col: Int, row: Long, value: Int): Unit = {
     columnVectors(col).foreach(v => v.setItem(row, value))
   }
 
